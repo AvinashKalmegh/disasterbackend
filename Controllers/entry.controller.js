@@ -2,37 +2,70 @@ const EntryModel = require("../Models/entry.model");
 const nodemailer = require("nodemailer");
 
 const smtpConfig = {
-    'host': 'smtp.ionos.com',
-    'port': 587,
-    'auth': {
-        'user': 'newsletter@cyberbriefs.com',
-        'pass': 'GetOurNewsletter12#$()'
+    host: 'smtp.ionos.com',
+    port: 587,
+    auth: {
+        user: 'newsletter@cyberbriefs.com',
+        pass: 'GetOurNewsletter12#$()'
     }
 };
 
 const sendEmail = async (email, link) => {
-    // Check if the email domain is .edu
-    if (!email.endsWith('.edu')) {
-        console.log('Email domain is not .edu. Rejecting...');
-        return false;
-    }
-
-    const transporter = nodemailer.createTransport(smtpConfig);
-
-    const mailOptions = {
-        from: smtpConfig.auth.user,
-        to: email,
-        subject: 'Disaster Management Simulation',
-        text: `Please click on the following link to proceed ${link}`
-    };
-
     try {
+        const transporter = nodemailer.createTransport(smtpConfig);
+
+        const mailOptions = {
+            from: smtpConfig.auth.user,
+            to: email,
+            subject: 'Disaster Management Simulation',
+            text: `Please click on the following link to proceed ${link}`
+        };
+
         const info = await transporter.sendMail(mailOptions);
         console.log("Email sent: " + info.response);
-        return info.response;
+        return { result: "Email sent successfully" };
     } catch (error) {
-        console.error("Error sending email:", error);
-        return false;
+        throw new Error("Error sending email");
+    }
+};
+
+const sendEmailAkshay = async (email, firstName, lastName, mobile) => {
+    try {
+        let fullname = `${firstName} ${lastName}`;
+        const transporter = nodemailer.createTransport(smtpConfig);
+
+        const mailOptions = {
+            from: smtpConfig.auth.user,
+            to: "akshay.kumar@onesmarter.com",
+            subject: 'New user registered on simulation',
+            text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent: " + info.response);
+        return { result: "Email sent successfully" };
+    } catch (error) {
+        throw new Error("Error sending email");
+    }
+};
+
+const sendEmailVikram = async (email, firstName, lastName, mobile) => {
+    try {
+        let fullname = `${firstName} ${lastName}`;
+        const transporter = nodemailer.createTransport(smtpConfig);
+
+        const mailOptions = {
+            from: smtpConfig.auth.user,
+            to: "vikram@vikramsethi.com",
+            subject: 'New user registered on simulation',
+            text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email sent: " + info.response);
+        return { result: "Email sent successfully" };
+    } catch (error) {
+        throw new Error("Error sending email");
     }
 };
 
@@ -40,49 +73,47 @@ const postEntry = async (req, res) => {
     try {
         const payload = req.body;
         const data = await EntryModel.findOne({ email: payload.email });
-        let obj = {
-            firstName :payload.firstName,
-            lastName : payload.lastName,
-            mobile : payload.mobile,
-            email : payload.email
-        }
+        const obj = {
+            firstName: payload.firstName,
+            lastName: payload.lastName,
+            mobile: payload.mobile,
+            email: payload.email
+        };
 
         if (data) {
-            if (payload.email.endsWith('.edu')) {
-                // Send email before adding to the database
-                const emailSent = await sendEmail(payload.email, payload.link);
-            res.status(201).send({ result: "User already present" });
-            }
-           else{
-                    const newUser = new EntryModel(obj);
-                    await newUser.save();
-                    res.status(201).send({ result: "Email added to database successfully" });
-           }
+            res.status(203).send({ result: "Email already registered" });
         } else {
-            // Check if email domain is .edu
+            let saveResult;
+            let saveEmail;
             if (payload.email.endsWith('.edu')) {
                 // Send email before adding to the database
-                const emailSent = await sendEmail(payload.email, payload.link);
-                console.log(emailSent);
-                if (emailSent) {
-                    const newUser = new EntryModel(obj);
-                    await newUser.save();
-                    res.status(201).send({ result: "Email added to database successfully" });
-                } else {
-                    res.status(500).send({ result: "Failed to send email" });
-                }
-            } else if(!payload.email.endsWith('.edu')){
+                await sendEmail(payload.email, payload.link);
+                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile);
+                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+
                 const newUser = new EntryModel(obj);
-                    await newUser.save();
-                    res.status(201).send({ result: "Email added to database successfully" });
-                }
-                else{
-                    
-                    res.status(500).send({ result: "Email domain is not .edu. Rejecting..." });
+                saveResult = await newUser.save();
+            } else {
+                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+
+                const newUser = new EntryModel(obj);
+                saveEmail = await newUser.save();
+            }
+
+            if (saveResult) {
+                res.status(201).send({ result: "Email added to database successfully" });
+            }
+            else if (saveEmail) {
+                res.status(202).send({ result: "Email added to database successfully" });
+
+            }
+            else {
+                res.status(500).send({ result: "Failed to save email to the database" });
             }
         }
     } catch (error) {
-        res.send(error.message);
+        res.status(500).send(error.message);
     }
 };
 
