@@ -82,7 +82,7 @@ const postEntry = async (req, res) => {
             access : payload.access
         };
 
-        if(payload.email.endsWith('.com')){
+        if(payload.email.endsWith('.edu')){
             obj.access = true;
         }
         else{
@@ -103,9 +103,8 @@ const postEntry = async (req, res) => {
                 const newUser = new EntryModel(obj);
                 saveResult = await newUser.save();
             } else {
-                await sendEmail(payload.email, payload.link);
-                // await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
-                // await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
 
                 const newUser = new EntryModel(obj);
                 saveEmail = await newUser.save();
