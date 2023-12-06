@@ -36,7 +36,7 @@ const sendEmailAkshay = async (email, firstName, lastName, mobile) => {
 
         const mailOptions = {
             from: smtpConfig.auth.user,
-            to: "avinashkalmegh93@gmail.com",
+            to: "akshay.kumar@onesmarter.com",
             subject: 'New user registered on simulation',
             text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
         };
@@ -56,7 +56,7 @@ const sendEmailVikram = async (email, firstName, lastName, mobile) => {
 
         const mailOptions = {
             from: smtpConfig.auth.user,
-            to: "avinashkalmegh93@gmail.com",
+            to: "vikram@vikramsethi.com",
             subject: 'New user registered on simulation',
             text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
         };
