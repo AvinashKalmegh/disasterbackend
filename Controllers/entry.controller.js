@@ -36,7 +36,7 @@ const sendEmailAkshay = async (email, firstName, lastName, mobile) => {
 
         const mailOptions = {
             from: smtpConfig.auth.user,
-            to: "akshay.kumar@onesmarter.com",
+            to: "avinashkalmegh93@gmail.com",
             subject: 'New user registered on simulation',
             text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
         };
@@ -56,7 +56,7 @@ const sendEmailVikram = async (email, firstName, lastName, mobile) => {
 
         const mailOptions = {
             from: smtpConfig.auth.user,
-            to: "vikram@vikramsethi.com",
+            to: "avinashkalmegh93@gmail.com",
             subject: 'New user registered on simulation',
             text: `New email registered to our simulation: \n ${fullname} \n ${email} \n ${mobile}`
         };
@@ -72,13 +72,22 @@ const sendEmailVikram = async (email, firstName, lastName, mobile) => {
 const postEntry = async (req, res) => {
     try {
         const payload = req.body;
+        console.log(payload);
         const data = await EntryModel.findOne({ email: payload.email });
         const obj = {
             firstName: payload.firstName,
             lastName: payload.lastName,
             mobile: payload.mobile,
-            email: payload.email
+            email: payload.email,
+            access : payload.access
         };
+
+        if(payload.email.endsWith('.edu')){
+            obj.access = true;
+        }
+        else{
+            obj.access = false;
+        }
 
         if (data) {
             res.status(203).send({ result: "Email already registered" });
@@ -116,5 +125,6 @@ const postEntry = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
 
 module.exports = postEntry;

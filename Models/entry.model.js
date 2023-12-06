@@ -6,7 +6,8 @@ const entrySchema = mongoose.Schema({
     email: {type: String,unique:true},
     mobile: Number,
     countryCode: Number,
-    link:String
+    link:String,
+    access: Boolean
 })
 
 
