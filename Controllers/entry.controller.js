@@ -2,11 +2,11 @@ const EntryModel = require("../Models/entry.model");
 const nodemailer = require("nodemailer");
 
 const smtpConfig = {
-    host: 'smtp.ionos.com',
-    port: 587,
+    host: 'mail.privateemail.com',
+    port: 465,
     auth: {
-        user: 'newsletter@cyberbriefs.com',
-        pass: 'GetOurNewsletter12#$()'
+        user: 'support@disruptionsim.com',
+        pass: 'Onesmarter@2023'
     }
 };
 
