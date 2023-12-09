@@ -28,7 +28,7 @@ const sendEmail = async (email, link) => {
             <p>Please note that you are experiencing the first version of our simulation. While we have worked diligently to create a smooth and engaging experience, there may be occasional glitches or areas for improvement.</p>
             <p><strong>We Value Your Feedback:</strong></p>
             <p>Your feedback is essential in shaping the future of our Simulation. We encourage you to share your thoughts, experiences, and any issues you encounter on email id of simulation</p>
-            <p>Best regards,<br/>Vikram Sethi<br/>emailid</p>`
+            <p>Best regards,<br/>Vikram Sethi<br/>vikram@vikramsethi.com</p>`
         };
 
         const info = await transporter.sendMail(mailOptions);
@@ -92,7 +92,7 @@ const postEntry = async (req, res) => {
             access : payload.access
         };
 
-        if(payload.email.endsWith('.com')){
+        if(payload.email.endsWith('.edu')){
             obj.access = true;
         }
         else{
@@ -104,17 +104,17 @@ const postEntry = async (req, res) => {
         } else {
             let saveResult;
             let saveEmail;
-            if (payload.email.endsWith('.com')) {
+            if (payload.email.endsWith('.edu')) {
                 // Send email before adding to the database
                 await sendEmail(payload.email, payload.link);
-                // await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile);
-                // await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile);
+                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
 
                 const newUser = new EntryModel(obj);
                 saveResult = await newUser.save();
             } else {
-                // await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
-                // await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
 
                 const newUser = new EntryModel(obj);
                 saveEmail = await newUser.save();
