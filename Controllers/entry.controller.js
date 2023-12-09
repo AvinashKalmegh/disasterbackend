@@ -84,7 +84,7 @@ const postEntry = async (req, res) => {
             access : payload.access
         };
 
-        if(payload.email.endsWith('.edu')){
+        if(payload.email.endsWith('.com')){
             obj.access = true;
         }
         else{
