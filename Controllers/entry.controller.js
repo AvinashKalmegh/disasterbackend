@@ -18,7 +18,9 @@ const sendEmail = async (email, link) => {
             from: smtpConfig.auth.user,
             to: email,
             subject: 'Disaster Management Simulation',
-            text: `Please click on the following link to proceed ${link}`
+            text: `Please click on the following link to proceed ${link}`,
+            html: `
+                <h1>Please click <a href="${link}">here</a> to proceed.</h1>`
         };
 
         const info = await transporter.sendMail(mailOptions);
@@ -94,17 +96,17 @@ const postEntry = async (req, res) => {
         } else {
             let saveResult;
             let saveEmail;
-            if (payload.email.endsWith('.edu')) {
+            if (payload.email.endsWith('.com')) {
                 // Send email before adding to the database
                 await sendEmail(payload.email, payload.link);
-                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile);
-                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                // await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile);
+                // await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
 
                 const newUser = new EntryModel(obj);
                 saveResult = await newUser.save();
             } else {
-                await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
-                await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                // await sendEmailAkshay(payload.email, payload.firstName, payload.lastName, payload.mobile)
+                // await sendEmailVikram(payload.email, payload.firstName, payload.lastName, payload.mobile)
 
                 const newUser = new EntryModel(obj);
                 saveEmail = await newUser.save();
