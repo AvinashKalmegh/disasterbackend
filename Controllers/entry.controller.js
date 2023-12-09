@@ -22,7 +22,7 @@ const sendEmail = async (email, link) => {
             <p>Dear Requestor,</p>
             <p>We are thrilled to extend to you immediate access to our latest simulation. As a valued member of our community, your participation and insights are crucial to the ongoing development of this innovative platform.</p>
             <p><strong>Accessing the Simulation:</strong></p>
-            <p>You can access the Simulation directly through this link: <a href="${link}"><button>Click here</button></a></p>
+            <p>You can access the Simulation directly through this link: <a href="${link}"><button style={{"cursor":"pointer", "background-color":"skyblue", "color":"white"}}>Click here</button></a></p>
             <p><strong>First Version Notice:</strong></p>
             <p>Please note that you are experiencing the first version of our simulation. While we have worked diligently to create a smooth and engaging experience, there may be occasional glitches or areas for improvement.</p>
             <p><strong>We Value Your Feedback:</strong></p>
