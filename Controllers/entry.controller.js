@@ -18,7 +18,6 @@ const sendEmail = async (email, link) => {
             from: smtpConfig.auth.user,
             to: email,
             subject: 'Access Granted to Our Executive Simulation on Disaster Managament - Welcome Aboard!',
-            text: `Please click on the following link to proceed ${link}`,
             html: `
             <p>Dear Requestor,</p>
             <p>We are thrilled to extend to you immediate access to our latest simulation. As a valued member of our community, your participation and insights are crucial to the ongoing development of this innovative platform.</p>
