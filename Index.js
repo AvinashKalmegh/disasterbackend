@@ -10,7 +10,7 @@ const EntryRouter = require("./Routes/entry.route");
 const AccessRouter = require("./Routes/access.route");
 require("dotenv").config();
 
-const PORT = 5500 || process.env.PORT;
+const PORT = 8010;
 
 
 const app = express();
@@ -22,13 +22,13 @@ app.get("/",(req,res)=>{
     res.send("Home Page");
 })
 
-app.use("/api/user",UserRouter);
-app.use("/api/allsim", AllSimsRouter);
-app.use("/api/startsim",StartSimRouter);
-app.use("/api/joingroup",JoinGroupRouter);
-app.use("/api/joinlobby",JoinLobbyRouter);
-app.use("/api/entry",EntryRouter);
-app.use("/api/access",AccessRouter);
+app.use("/api2/user",UserRouter);
+app.use("/api2/allsim", AllSimsRouter);
+app.use("/api2/startsim",StartSimRouter);
+app.use("/api2/joingroup",JoinGroupRouter);
+app.use("/api2/joinlobby",JoinLobbyRouter);
+app.use("/api2/entry",EntryRouter);
+app.use("/api2/access",AccessRouter);
 
 
 app.listen(PORT, ()=>{
